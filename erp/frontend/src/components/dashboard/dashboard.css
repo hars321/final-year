@@ -1,0 +1,18 @@
+.chart {
+  height: 400px !important;
+}
+
+.graph {
+  height: 500px !important;
+}
+
+.dashboard-student {
+  text-align: center;
+  background-image: linear-gradient(
+    #e5fcc2,
+    #9de0ad,
+    #45ada8,
+    #547980,
+    #2a363b
+  );
+}
