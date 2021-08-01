@@ -281,6 +281,7 @@ const mailsend = (req, res) => {
 };
 
 const getAttendance = async (req,res)=>{
+    console.log(req.body.enrollment);
     const enrollmentExist= await attend.findOne({
         enrollment: req.body.enrollment,
     });

@@ -34,8 +34,8 @@ const storage = multer.diskStorage({
     filename: (req, file, cb) => {
         const fileName = file.originalname.toLowerCase().split(' ').join('-');
         // cb(null, uuidv4() + '-' + fileName)
-        cb(null, fileName)
-        // cb(null, file.fieldname + '-' + Date.now())
+        // cb(null, fileName)
+        cb(null, file.fieldname + '-' + Date.now())
     }
 });
 
@@ -55,6 +55,7 @@ var upload = multer({
 let {calendar, certificate} = require('../model/upload');
 
 router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
+    console.log('here',req);
     const url = req.protocol + '://' + req.get('host')
 
     const user = new calendar({
@@ -71,7 +72,7 @@ router.post('/uploadfile', upload.single('calpdf'), (req, res, next) => {
             if (err) {
                 console.log("Something wrong when updating file!");
             }
-            res.status(201).json(doc);
+            res.status(200).json(doc);
     });
 
     // user.save().then(result => {

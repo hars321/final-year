@@ -7,7 +7,7 @@ function UserSelection() {
     return (
         <div className="selectUser container p-0">
             <nav class="navbar navbar-expand-lg homepage-navbar p-0">
-                <a class="navbar-brand ml-3">SAMP</a>
+                <a class="navbar-brand ml-3">ERP Panel</a>
                 <button
                     class="navbar-toggler"
                     type="button"
@@ -74,15 +74,10 @@ function UserSelection() {
                 </div>
                 <div className="col m-0 text-right pt-5">
                     <div className="welcome mt-5  pr-4">
-                        Students Academic Management Portal
+                       ERP PORTAL
                     </div>
                     <div className="welcome-text mt-2  pr-4">
-                        A web portal to keep track of all the information
-                        related to the academic courses of the students. A place
-                        for students to see their marks, attendance and other
-                        academic records and request for modifications if
-                        required.
-                    </div>
+                        A ERP portal to keep track of all the information.s</div>
                     <Link class="nav-link homepage-link " to="/studentLogin">
                         <button
                             type="button"

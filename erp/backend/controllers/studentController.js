@@ -18,20 +18,20 @@ const { studentRegisterValid, studentLoginValid } = require("./validation");
 const { calendar, certificate, Request } = require("../model/upload");
 
 const mongoose = require("mongoose");
-const dotenv = require("dotenv");
-dotenv.config();
 
-mongoose.connect(
-    process.env.DB_CONNECT,
-    { useUnifiedTopology: true, useNewUrlParser: true },
-    () => console.log("Connected to MongoDB")
-);
+
+// mongoose.connect(
+//     process.env.DB_CONNECT,
+//     { useUnifiedTopology: true, useNewUrlParser: true },
+//     () => console.log("Connected to MongoDB")
+// );
 
 var currentTime = new Date();
 
 const studentRegister = async (req, res) => {
     try {
         const student = new Student(req.body);
+        console.log(student);
         let givenEmail = req.body.email;
         let givenPassword = req.body.password;
 
@@ -47,80 +47,8 @@ const studentRegister = async (req, res) => {
         // hash password
         const salt = await bcrypt.genSalt(10);
         student.password = await bcrypt.hash(givenPassword, salt);
-        Courses.findCourse(
-            "courses",
-            {
-                semester: student.semester,
-                branch: student.branch,
-            },
-            function (err, docs2) {
-                for (var i = 0; i < docs2[0].course_list.length; i++) {
-                    student.current_course.push(docs2[0].course_list[i]);
-                }
-                student.current_course.sort((a, b) =>
-                    a.course_Name > b.course_Name ? 1 : -1
-                );
-
-                course_summary.deleteMany({enrollment: req.body.enrollment}, function (err, _) {
-                    if (err) {
-                        return console.log(err);
-                    }
-                });
-                
-                attend.deleteMany({enrollment: req.body.enrollment}, function (err, _) {
-                    if (err) {
-                        return console.log(err);
-                    }
-                });
-
-                var new_enroll = new course_summary();
-                var new_enroll_attend = new attend();
-                new_enroll.enrollment = req.body.enrollment;
-                new_enroll_attend.enrollment = req.body.enrollment;
-                for (var i = 0; i < docs2[0].course_list.length; i++) {
-                    new_enroll.semester_marks.push({
-                        course_ID: docs2[0].course_list[i].course_ID,
-                        course_Name: docs2[0].course_list[i].course_Name,
-                        marks: {
-                            c1: 0,
-                            c2: 0,
-                            c3: 0,
-                            total: 0,
-                            gpa: 0,
-                        },
-                    });
-                    new_enroll_attend.subjects_attend.push({
-                        course_ID: docs2[0].course_list[i].course_ID,
-                        course_Name: docs2[0].course_list[i].course_Name,
-                        daysoutof90: 0,
-                    });
-                }
-
-                new_enroll.semester_marks.sort((a, b) =>
-                    a.course_Name > b.course_Name ? 1 : -1
-                );
-                new_enroll_attend.subjects_attend.sort((a, b) =>
-                    a.course_Name > b.course_Name ? 1 : -1
-                );
-
-                new_enroll.save();
-                new_enroll_attend.save();
-                // console.log(new_enroll);
-
-                student.save();
-                res.status(201).json(student);
-
-                var created_date_time = student.creation_date;
-                var current_date_time = student.last_login_date;
-                current_date_time = currDateTime(currentTime);
-                if (!created_date_time) {
-                    created_date_time = currDateTime(currentTime);
-                }
-                var action_string =
-                    "Successfully Registered " + student.username;
-                addtoLog(action_string, "Student", currentTime);
-            }
-        );
+        student.save();
+        res.status(201).json(student);
     } catch (err) {
         res.status(400).json(err);
     }

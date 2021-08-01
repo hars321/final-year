@@ -15,16 +15,18 @@ export default class AcademicCalendar extends Component {
     }
 
     onFileChange(e) {
-        this.setState({ calpdf: e.target.files[0] });
+        console.log(e.target.files)
+        this.setState({ calpdf: e.target.files[0] })
     }
 
     onSubmit(e) {
         e.preventDefault();
         const formData = new FormData();
+        console.log(this.state.calpdf)
         formData.append("calpdf", this.state.calpdf);
-        //     console.log(formData);
+            console.log(formData);
         axios
-            .post("http://localhost:3001/cal/uploadfile", formData, {
+            .post("http://localhost:8000/cal/uploadfile", formData, {
                 headers: {
                     "admin-auth-token": localStorage.token,
                     "Content-Type": "multipart/form-data",
